@@ -14,9 +14,6 @@ function fname=getBFfileName(z,t)
 % ------------------------------------------------------------------------
 % adjust to your naming convention
 % ------------------------------------------------------------------------
-if t==1
 fname = sprintf('BFFRAME/BFframe_t%06i_%04i.tif', t, z);
-elseif t==2
-fname = sprintf('BFFRAME/BFframe_t%06i_%08i.tif', t, z);
-end
+
 end
