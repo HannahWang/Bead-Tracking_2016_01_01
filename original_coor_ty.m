@@ -1,7 +1,7 @@
 function [x,y,z,u,v,w,lar_x,lar_y,lar_z,lar_u,lar_v,lar_w,count]=original_coor_ty(timestep,start_z,max_z,sampling)
 
 % %bead_tnxyz = evalin('base','bead_tnxyz');
-% load('Copy_of_StrainEnergy3D_SD_2015_12_31/bead_tnxyz.mat','bead_tnxyz');
+% load('Copy_of_StrainEnergy3D_SD_2016-01-01/bead_tnxyz.mat','bead_tnxyz');
 % 
 % %find start_num
 % n_row_idx = (bead_tnxyz(:,5) == max_z);
