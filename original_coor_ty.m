@@ -47,11 +47,11 @@ next=Atemp2.';
 dis=next-ori;
 
 dis2=dis;
-x1=ori(1,:)/6;
-y1=ori(2,:)/6;
+x1=ori(1,:);
+y1=ori(2,:);
 z1=ori(3,:);
-u1=dis2(1,:)/6;
-v1=dis2(2,:)/6;
+u1=dis2(1,:);
+v1=dis2(2,:);
 w1=dis2(3,:);
 
 x = [];
