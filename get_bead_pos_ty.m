@@ -16,15 +16,12 @@ n_filtered = bead_tnxyz(n_row_idx,:);
 t_row_idx = (n_filtered(:,1) == timestep);
 nt_filtered = n_filtered(t_row_idx,:);
 
-x = nt_filtered(3);
-y = nt_filtered(4);
-z = nt_filtered(5);
-if timestep == 2
-    y = y-2;
-    z = z+1;   
-end
-x = x/6;
-y = y/6;
-A=[x y z];
+x_cor = nt_filtered(3);
+y_cor = nt_filtered(4);
+z_cor = nt_filtered(5);
+
+x_cor = x_cor/6;
+y_cor = y_cor/6;
+A=[x_cor y_cor z_cor];
 
 end

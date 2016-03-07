@@ -29,7 +29,7 @@ for z_idx = 0:1000
     img = insertShape(img, 'circle', [sel(:, 1:2) 6*ones(n_beads, 1)], 'LineWidth', 1, 'Color', 'green');
     
 
-    imwrite(img, sprintf('beads_%d_%d.png', t_idx, z_idx));
+    imwrite(img, sprintf('BEAD/beads_%d_%d.png', t_idx, z_idx));
 end
 
 end
