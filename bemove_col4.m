@@ -1,8 +1,8 @@
 function [x,y,z,u,v,w,count]=bemove_col4(timestep,start_z,max_z,sampling)
 
-%bead_tnxyz = evalin('base','bead_tnxyz');
-load('Copy_of_StrainEnergy3D_SD_2016-01-01/bead_tnxyz.mat','bead_tnxyz');
 
+load('Copy_of_StrainEnergy3D_SD_2016-01-01/bead_tnxyz.mat','bead_tnxyz');
+bead_tnxyz = evalin('base','bead_tnxyz');
 %find start_num
 n_row_idx = (bead_tnxyz(:,5) == max_z);
 n_filtered = bead_tnxyz(n_row_idx,:);
@@ -77,11 +77,13 @@ for i=1:number
     w=[w w1(i)];
     
     ll=floor(sqrt(u1(i)^2+v1(i)^2+w1(i)^2))+1; 
-    count(ll)=count(ll)+1;
-    cmap(i,:)=cmap_ref(ll,[2 3 4]);
-        if floor(sqrt(u1(i)^2+v1(i)^2+w1(i)^2))+1>7
+   
+        if ll>7
             count(7)=count(7)+1;
             cmap(i,:)=cmap_ref(7,[2 3 4]);
+        else
+             count(ll)=count(ll)+1;
+             cmap(i,:)=cmap_ref(ll,[2 3 4]);      
         end
         
     small_move=quiver3(x(i),y(i),z(i),u(i),v(i),w(i),'color',cmap(i,:));
@@ -98,6 +100,6 @@ zlabel('z axis');
 c=colorbar;
 caxis([0 7]);
 colorbar('Ticks',[0 1 2 3 4 5 6 7],'TickLabels',{'0','1','2','3','4','5','6','7'})
-set(c,'Ylabel','Displacement(um)');
+title(colorbar,'displacement(um)');
 
 end
