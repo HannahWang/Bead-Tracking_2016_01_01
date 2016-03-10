@@ -1,7 +1,7 @@
 function [x,y,z,u,v,w,count]=bemove_col4(timestep,start_z,max_z,sampling)
 
 
-load('Copy_of_StrainEnergy3D_SD_2016-01-01/bead_tnxyz.mat','bead_tnxyz');
+load('bead_tnxyz.mat','bead_tnxyz');
 bead_tnxyz = evalin('base','bead_tnxyz');
 %find start_num
 n_row_idx = (bead_tnxyz(:,5) == max_z);
@@ -63,8 +63,12 @@ w = [];
 count = [0 0 0 0 0 0 0];
 
 length=linspace(1,7,7);
+jet_div=jet(7);
 cmap_ref=[transpose(length) jet(7)];
 cmap=[];
+headWidth = 8;
+headLength = 8;
+LineLength = 0.08;
 
 figure,
 hold on
@@ -86,20 +90,22 @@ for i=1:number
              cmap(i,:)=cmap_ref(ll,[2 3 4]);      
         end
         
-    small_move=quiver3(x(i),y(i),z(i),u(i),v(i),w(i),'color',cmap(i,:));
+    small_move=quiver3(x(i),y(i),z(i),u(i),v(i),w(i),'color',cmap(i,:),'MaxHeadSize',70,'AutoScaleFactor',0.89,'AutoScale','off');
     alpha = 0.33; 
     beta = 0.23; 
+    
 end
+
 set(gca,'color',[0 0 0]);
-set(small_move,'MaxHeadSize',50,'ShowArrowHead','on')
-xlabel('x axis');
-ylabel('y axis');
-zlabel('z axis');
+xlabel('x axis','fontsize',14);
+ylabel('y axis','fontsize',14);
+zlabel('z axis','fontsize',14);
+axis([0 168 0 168]);
 
 
 c=colorbar;
 caxis([0 7]);
-colorbar('Ticks',[0 1 2 3 4 5 6 7],'TickLabels',{'0','1','2','3','4','5','6','7'})
-title(colorbar,'displacement(um)');
+colorbar('Ticks',[0 1 2 3 4 5 6 7],'TickLabels',{'0','1','2','3','4','5','6','7'},'fontsize',14)
+ylabel(colorbar,'Displacement(um)','fontsize',14);
 
 end
