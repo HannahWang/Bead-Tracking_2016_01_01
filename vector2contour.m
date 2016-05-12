@@ -1,8 +1,8 @@
 % function [x,y,z,u,v,w,count]=bemove_col4(t,z_min,z_max,sampling)
 t=1;
-z_min=50;
-z_max=300;
-sampling=200;
+z_min=240;
+z_max=270;
+sampling=10;
 
 load('bead_tnxyz.mat','bead_tnxyz');
 bead_tnxyz = evalin('base','bead_tnxyz');
@@ -25,7 +25,7 @@ while n_filt_size(1) == 0
 end
 max_bead_num = max(n_filtered(:,2));
 % position 
-number=((max_bead_num-start_num+1)-mod((max_bead_num-start_num+1),sampling))/sampling; 
+number=((max_bead_num-start_num+1)-mod((max_bead_num-start_num+1),sampling))/sampling;
 Atemp=zeros(number,3);
 Atemp2=zeros(number,3);
 bead_num=1;
@@ -76,8 +76,37 @@ LineLength = 0.08;
 
 figure,
 
-displacement=[];
+
 hold on
+
+% for contour map
+height=zeros(168,168);
+
+for x_idx=1:168
+    
+    for y_idx=1:168
+        unit_idx=0;
+        sum_idx=0;
+        for i=1:number
+            
+            while abs(x1(i)-x_idx)<=1 && abs(y1(i)-y_idx)<=1 && abs(z1(i)-(z_max-z_min/2))<= z_max-z_min/2
+                unit_idx=sqrt(u1(i)^2+v1(i)^2+w1(i)^2);
+                sum_idx=[unit_idx unit_idx];
+                
+                break
+            end
+        end
+        height(x_idx,y_idx)=mean(sum_idx);
+        
+    end
+    
+end
+ x_coor=linspace(1,168,168);
+ y_coor=linspace(1,168,168);
+ contourf(x_coor,y_coor,height);
+ 
+% for vector map/quiver3
+displacement=[];
 
 for i=1:number
     x=[x x1(i)];
@@ -87,18 +116,18 @@ for i=1:number
     v=[v v1(i)];
     w=[w w1(i)];
     
-   displacement(i)=sqrt(u1(i)^2+v1(i)^2+w1(i)^2);
-    ll=floor(5*displacement(i))+1;
-   
+    
+    displacement(i)=sqrt(u1(i)^2+v1(i)^2+w1(i)^2);
+    ll=floor(displacement(i))+1;
+    
         if ll>7
             count(7)=count(7)+1;
             cmap(i,:)=cmap_ref(7,[2 3 4]);
         else
              count(ll)=count(ll)+1;
              cmap(i,:)=cmap_ref(ll,[2 3 4]);      
-        end
-        
-    small_move=quiver3(x(i)*6,y(i)*6,z(i)-z_min,u(i)*6,v(i)*6,w(i),'color',cmap(i,:),'MaxHeadSize',70,'AutoScaleFactor',0.89,'AutoScale','off');
+        end   
+    small_move=quiver3(x(i)*6,y(i)*6,z(i)-z_min,u(i)*6,v(i)*6,w(i),'color',cmap(i,:),'MaxHeadSize',70,'AutoScaleFactor',0.89,'AutoScale','on');
     alpha = 0.33; 
     beta = 0.23; 
     
