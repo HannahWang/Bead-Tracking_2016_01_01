@@ -21,7 +21,7 @@
 % x/y/z axis length [µm] for SE density plot
 sedensplot_length_x_mum=170; 
 sedensplot_length_y_mum=170; 
-sedensplot_length_z_mum=500;
+sedensplot_length_z_mum=400;
 
 % SE density iso value for isosurface, relative to maximum.
 sedensplot_relativeIsoval=0.36;

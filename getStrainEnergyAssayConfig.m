@@ -75,20 +75,20 @@ cfg.scale_Px2muM=[0.17 .17 1];   % was 645E-3 645E-3 527*3.8E-3
 cfg.refractiveIdx=1.333;
 
 % Elastic shear modulus of ECM in µN/µm²
-cfg.Gmod=3E-4;
+cfg.Gmod=337E-7;
 
 % Poisson's ratio of ECM 
-cfg.poisson=0.35;
+cfg.poisson=0.48;
 
 % Shape correction cutoff, between 0 (all elements) and 1 (no elements),
 % 0.5 recommended
-cfg.shapeCutoff=0.5;
+cfg.shapeCutoff=0.05;
 
 % Cutoff for unrealistic strains. Set to Inf to switch off
-cfg.strainCutoff=0.5;
+cfg.strainCutoff=0.5;% was 0.5
 
 % gridsize for nearest neighbor interpolation im µm
-cfg.gridsize=5;
+cfg.gridsize=5;% was 5
 
 % bead displacement uncertainties in µm, used for noise correction
 cfg.deltax=0.022;

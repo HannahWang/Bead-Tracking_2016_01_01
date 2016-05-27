@@ -222,6 +222,7 @@ function [xdata displacements bead_numbers]=extractBeadDisplacements(bp, t1, t2)
     xdata=bp(idx1, 3:5);
     displacements=bp(idx2,3:5)-xdata;
     bead_numbers=bn1;
+    disp(bn1);
 end
 
 function converted=convertPx2muM(xdata, scale)

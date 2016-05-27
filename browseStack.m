@@ -71,12 +71,12 @@ hprofile_handles_below=[];
 % for BF and FL files.
 %
 z=0;
-while(exist(getFLfileName(z,1),'file'))
+while(exist(getBFfileName(z,1),'file'))
     z=z+1;
 end
 stacksize=z;
 t=1;
-while(exist(getFLfileName(0,t),'file'))
+while(exist(getBFfileName(0,t),'file'))
     t=t+1;
 end
 duration=t-1;
@@ -515,6 +515,7 @@ end
     function outlineCell()
         [cell_bw cell_xi cell_yi]=roipoly;
         if(~isempty(cell_bw))
+            tzcount = 1;
             cell_area=polyarea(cell_xi, cell_yi);
             cell_perimeter=sum(sqrt((cell_xi-circshift(cell_xi,1)).^2+(cell_yi-circshift(cell_yi,1)).^2));
             cell_circularity=cell_perimeter^2/(4*pi*cell_area);        
@@ -551,18 +552,25 @@ end
             plot(cell_x, cell_y, 'rp');
             plot([cell_x cell_x+200*cos(cell_theta)], [cell_y cell_y+200*sin(cell_theta)], 'r');
             %
-            oname=sprintf('cell_shape_%06d.mat',current_t);
+            %oname=sprintf('cell_shape_%06d.mat',current_t);
+            oname=sprintf('cell_shape/cell_shape_%06d_%d_%d.mat',current_t,current_z,tzcount);
             ok=false;
             if(exist(oname,'file')==2)
                 cont=questdlg(sprintf('File %s already exists. Overwrite?', oname), 'Overwrite file?', 'Overwrite', 'Cancel', 'Cancel');
                 if(isequal(cont,'Overwrite'))
                     ok=true;
                 else
-                    ok=false;     
+                    %ok=false;
+                    ok=true;
+                    while(exist(oname,'file')==2)
+                        tzcount=tzcount+1;
+                        oname=sprintf('cell_shape/cell_shape_%06d_%d_%d.mat',current_t,current_z,tzcount);
+                    end
                 end
             else
                 ok=true;
             end
+            %ok=true;
             if(ok)
                 save(oname, 'cell_x', 'cell_y', 'cell_z', 'cell_xi', 'cell_yi', 'cell_bw', 'cell_area', 'cell_perimeter', 'cell_circularity', 'cell_theta', 'cell_eig*', 'cell_isoidx');
             end

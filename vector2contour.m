@@ -1,8 +1,5 @@
-% function [x,y,z,u,v,w,count]=bemove_col4(t,z_min,z_max,sampling)
-t=1;
-z_min=240;
-z_max=270;
-sampling=10;
+function vector2contour(t,z_min,z_max,sampling,thickness)
+
 
 load('bead_tnxyz.mat','bead_tnxyz');
 bead_tnxyz = evalin('base','bead_tnxyz');
@@ -24,21 +21,21 @@ while n_filt_size(1) == 0
     n_filtered = bead_tnxyz(n_row_idx,:);
 end
 max_bead_num = max(n_filtered(:,2));
-% position 
+% position
 number=((max_bead_num-start_num+1)-mod((max_bead_num-start_num+1),sampling))/sampling;
 Atemp=zeros(number,3);
 Atemp2=zeros(number,3);
 bead_num=1;
 index_i=1;
 for i=start_num:sampling:max_bead_num
-%original
-a1=get_bead_pos_ty(t, i);
-Atemp(index_i, :) = a1;
-%next
-a2=get_bead_pos_ty(t+1,i);
-Atemp2(index_i, :) = a2;
-
-index_i=index_i+1;
+    %original
+    a1=get_bead_pos_ty(t, i);
+    Atemp(index_i, :) = a1;
+    %next
+    a2=get_bead_pos_ty(t+1,i);
+    Atemp2(index_i, :) = a2;
+    
+    index_i=index_i+1;
 end
 
 ori=Atemp.';
@@ -89,7 +86,7 @@ for x_idx=1:168
         sum_idx=0;
         for i=1:number
             
-            while abs(x1(i)-x_idx)<=1 && abs(y1(i)-y_idx)<=1 && abs(z1(i)-(z_max-z_min/2))<= z_max-z_min/2
+            while abs(x1(i)-x_idx)<=2 && abs(y1(i)-y_idx)<=2 && abs(z1(i)-(z_max-z_min/2))<= z_max-z_min/2
                 unit_idx=sqrt(u1(i)^2+v1(i)^2+w1(i)^2);
                 sum_idx=[unit_idx unit_idx];
                 
@@ -101,51 +98,59 @@ for x_idx=1:168
     end
     
 end
- x_coor=linspace(1,168,168);
- y_coor=linspace(1,168,168);
- contourf(x_coor,y_coor,height);
- 
-% for vector map/quiver3
-displacement=[];
+x_coor=linspace(1,168,168);
+y_coor=linspace(1,168,168);
+[cs,hc]=contourf(x_coor,y_coor,height);
+title(sprintf('img_%d_%d_th%d.png', t, z_min,thickness));
+xlabel('x axis')
+ylabel('y axis')
+set(hc,'Edgecolor','none');
+hgsave(sprintf('CONTOUR/img_%d_%d_th%d.png', t, z_min,thickness));
 
-for i=1:number
-    x=[x x1(i)];
-    y=[y y1(i)];
-    z=[z z1(i)];
-    u=[u u1(i)];
-    v=[v v1(i)];
-    w=[w w1(i)];
-    
-    
-    displacement(i)=sqrt(u1(i)^2+v1(i)^2+w1(i)^2);
-    ll=floor(displacement(i))+1;
-    
-        if ll>7
-            count(7)=count(7)+1;
-            cmap(i,:)=cmap_ref(7,[2 3 4]);
-        else
-             count(ll)=count(ll)+1;
-             cmap(i,:)=cmap_ref(ll,[2 3 4]);      
-        end   
-    small_move=quiver3(x(i)*6,y(i)*6,z(i)-z_min,u(i)*6,v(i)*6,w(i),'color',cmap(i,:),'MaxHeadSize',70,'AutoScaleFactor',0.89,'AutoScale','on');
-    alpha = 0.33; 
-    beta = 0.23; 
-    
 end
 
-        
-            set(gca,'color',[0 0 0]);
-            xlabel('x axis','fontsize',14);
-            ylabel('y axis','fontsize',14);
-            zlabel('z axis','fontsize',14);
-            axis([0 168 0 168]);
-            caxis([0 7]);
-            colorbar('Ticks',[0 1 2 3 4 5 6 7],'TickLabels',{'0','1','2','3','4','5','6','7'},'fontsize',14)
-            ylabel(colorbar,'Displacement(um)','fontsize',14);
-            c=colorbar;
-            ax=findobj(gcf,'type','axes');
-            c1=colorbar('peer',ax);
-            cbfreeze(c1);
+
+% % for vector map/quiver3
+% displacement=[];
+%
+% for i=1:number
+%     x=[x x1(i)];
+%     y=[y y1(i)];
+%     z=[z z1(i)];
+%     u=[u u1(i)];
+%     v=[v v1(i)];
+%     w=[w w1(i)];
+%
+%
+%     displacement(i)=sqrt(u1(i)^2+v1(i)^2+w1(i)^2);
+%     ll=floor(displacement(i))+1;
+%
+%         if ll>7
+%             count(7)=count(7)+1;
+%             cmap(i,:)=cmap_ref(7,[2 3 4]);
+%         else
+%              count(ll)=count(ll)+1;
+%              cmap(i,:)=cmap_ref(ll,[2 3 4]);
+%         end
+%     small_move=quiver3(x(i)*6,y(i)*6,z(i)-z_min,u(i)*6,v(i)*6,w(i),'color',cmap(i,:),'MaxHeadSize',70,'AutoScaleFactor',0.89,'AutoScale','on');
+%     alpha = 0.33;
+%     beta = 0.23;
+%
+% end
+%
+%
+%             set(gca,'color',[0 0 0]);
+%             xlabel('x axis','fontsize',14);
+%             ylabel('y axis','fontsize',14);
+%             zlabel('z axis','fontsize',14);
+%             axis([0 168 0 168]);
+%             caxis([0 7]);
+%             colorbar('Ticks',[0 1 2 3 4 5 6 7],'TickLabels',{'0','1','2','3','4','5','6','7'},'fontsize',14)
+%             ylabel(colorbar,'Displacement(um)','fontsize',14);
+%             c=colorbar;
+%             ax=findobj(gcf,'type','axes');
+%             c1=colorbar('peer',ax);
+%             cbfreeze(c1);
 
 
 %set(small_move,'CurrentAxes',ax)
@@ -167,12 +172,14 @@ end
 
 %max_t=imagesc([resol resol*1002],[resol resol*1004],max_im);
 
-for k=z_min:z_max
-I=imread(sprintf('Copy_of_StrainEnergy3D_SD_2016-01-01/BFFRAME/BFframe_t%06i_%04i.tif',t,k));    
-comp_im(:,:,k-z_min+1)=I; 
-end
-
-%z projection
+% for k=z_min:z_max
+% I=imread(sprintf('Copy_of_StrainEnergy3D_SD_2016-01-01/BFFRAME/BFframe_t%06i_%04i.tif',t,k));
+% comp_im(:,:,k-z_min+1)=I;
+% end
+%
+% %z projection
+% figure,
+%
 % max_im=5*max(comp_im,[],3);
 % resol=1/6;
 % max_t=imresize(max_im,resol);
@@ -181,15 +188,15 @@ end
 
 %y projection
 
-%x-z projection 
+%x-z projection
 % max_2=max(comp_im,[],2);
 % max_2t = squeeze(max_2);
 % max_2t=15*max_2t;
 % resol=1;
 % max_t2=imresize(max_2t,resol);
-% 
+%
 % imshow(max_t2)
-% 
+%
 % imagesc([resol resol*1002],[resol resol*1004],max_im);
 
 %end

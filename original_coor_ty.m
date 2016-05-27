@@ -1,7 +1,8 @@
 function [x,y,z,u,v,w,lar_x,lar_y,lar_z,lar_u,lar_v,lar_w,count]=original_coor_ty(t,z_min,z_max,sampling)
 
+
 %bead_tnxyz = evalin('base','bead_tnxyz');
-load('Copy_of_StrainEnergy3D_SD_2016-01-01/bead_tnxyz.mat','bead_tnxyz');
+load('bead_tnxyz.mat','bead_tnxyz');
 %load('bead_tnxyz.mat','bead_tnxyz');
 
 %find start_num
@@ -19,11 +20,11 @@ nt_filtered = n_filtered(t_row_idx,:);
 max_bead_num = max(nt_filtered(:,2));
 
 % position 
-number=((max_bead_num-start_num+1)-mod((max_bead_num-start_num+1),sampling))/sampling; 
+number=((max_bead_num-start_num+1)-mod((max_bead_num-start_num+1),sampling))/sampling+1; 
 Atemp=zeros(number,3);
 Atemp2=zeros(number,3);
 index_i=1;
-for i=start_num:sampling:max_bead_num+1
+for i=start_num:sampling:max_bead_num
 %original
 a1=get_bead_pos_ty(t, i);
 Atemp(index_i, :) = a1;
@@ -42,9 +43,9 @@ next=Atemp2.';
 dis=next-ori;
 dis2=dis;
 
-m_u=-0.081979364;
-m_v=0.101759265;
-m_w=0.009621208;
+m_u=-0.0832324638048359;
+m_v=0.100934095825993;
+m_w=0.0104824860195529;
 
 x1=ori(1,:);
 y1=ori(2,:);
@@ -164,29 +165,29 @@ end
 %     eval(['scatter3(X',int2str(t),', Y',int2str(t),', Z',int2str(t),' , 5, '' ',scatter_color_map(t),' ''); ']);
 %     hold on
 % end
-figure,
-quiver(x,y,u,v,'color','red','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
-hold on
-quiver(lar_x,lar_y,lar_u,lar_v,'color','green','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
-xlabel('x axis');
-ylabel('y axis');
-title(sprintf('z=%d-%d-xy',z_min,z_max));
-
-figure,
-quiver(x,z,u,w,'color','red','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
-hold on
-quiver(lar_x,lar_z,lar_u,lar_w,'color','green','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
-xlabel('x axis');
-ylabel('z axis');
-title(sprintf('z=%d-%d-xz',z_min,z_max));
-
-figure,
-quiver(y,z,v,w,'color','red','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
-hold on
-quiver(lar_y,lar_z,lar_v,lar_w,'color','green','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
-xlabel('y axis');
-ylabel('z axis');
-title(sprintf('z=%d-%d-yz',z_min,z_max));
+% figure,
+% quiver(x,y,u,v,'color','red','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
+% hold on
+% quiver(lar_x,lar_y,lar_u,lar_v,'color','green','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
+% xlabel('x axis');
+% ylabel('y axis');
+% title(sprintf('z=%d-%d-xy',z_min,z_max));
+% 
+% figure,
+% quiver(x,z,u,w,'color','red','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
+% hold on
+% quiver(lar_x,lar_z,lar_u,lar_w,'color','green','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
+% xlabel('x axis');
+% ylabel('z axis');
+% title(sprintf('z=%d-%d-xz',z_min,z_max));
+% 
+% figure,
+% quiver(y,z,v,w,'color','red','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
+% hold on
+% quiver(lar_y,lar_z,lar_v,lar_w,'color','green','MaxHeadSize',0.2,'AutoScaleFactor',0.89,'AutoScale','off');
+% xlabel('y axis');
+% ylabel('z axis');
+% title(sprintf('z=%d-%d-yz',z_min,z_max));
 % %scatter3(X,Y,Z,5,'.','blue');
 
 end
